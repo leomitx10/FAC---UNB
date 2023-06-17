@@ -1,0 +1,170 @@
+.data
+	soma: .asciiz "ADD: " 
+	subtracao: .asciiz "SUB: "
+	e: .asciiz "AND: "
+	ou: .asciiz "OR: "
+	ou_x: .asciiz "XOR: "
+	mascara: .asciiz "MASK: "
+	shift_left: .asciiz "SLL"
+	shift_right: .asciiz "SRL"
+	p1: .asciiz "("
+	p2: .asciiz "): "
+	quebralinha: .asciiz "\n"
+
+.text
+
+main:
+	# LENDO O VALOR A
+	li $v0, 5	
+	syscall
+	move $t0, $v0		
+	
+	# LENDO O VALOR B
+	li $v0, 5		
+	syscall
+	move $t1, $v0		
+	
+	# LENDO O VALOR C
+	li $v0, 5		
+	syscall
+	move $t2, $v0		
+	
+	#SOMA
+	add $t3, $t0, $t1	
+	li $v0, 4		
+	la $a0, soma		
+	syscall
+	
+	li $v0, 1		
+	move $a0, $t3		
+	syscall
+	
+	li $v0, 4		
+	la $a0, quebralinha	
+	syscall
+	
+	#SUBTRAI
+	sub $t3, $t0, $t1	
+	li $v0, 4		
+	la $a0, subtracao	
+	syscall
+	
+	li $v0, 1		
+	move $a0, $t3		
+	syscall
+	
+	li $v0, 4		
+	la $a0, quebralinha	
+	syscall
+	
+	#AND
+	and $t3, $t0, $t1	
+	li $v0, 4		
+	la $a0, e	
+	syscall
+	
+	li $v0, 1		
+	move $a0, $t3		
+	syscall
+	
+	li $v0, 4		
+	la $a0, quebralinha	
+	syscall
+	
+	#OR
+	or $t3, $t0, $t1	
+	li $v0, 4		
+	la $a0, ou	
+	syscall
+	
+	li $v0, 1		
+	move $a0, $t3		
+	syscall
+	
+	li $v0, 4		
+	la $a0, quebralinha	
+	syscall
+	
+	#XOR
+	xor $t3, $t0, $t1	
+	li $v0, 4		
+	la $a0, ou_x	
+	syscall
+	
+	li $v0, 1		
+	move $a0, $t3		
+	syscall
+	
+	li $v0, 4		
+	la $a0, quebralinha	
+	syscall
+	
+	#MASK ( M )
+	and $t3, $t2, 0x1f	
+	li $v0, 4		
+	la $a0, mascara		
+	syscall
+	
+	li $v0, 1		
+	move $a0, $t3		
+	syscall
+	
+	li $v0, 4		
+	la $a0, quebralinha	
+	syscall
+		
+	#SLL
+	sllv $t0, $t0, $t3	
+	li $v0, 4		
+	la $a0, shift_left	
+	syscall
+	
+	li $v0, 4		
+	la $a0, p1		
+	syscall
+	
+	li $v0, 1		
+	move $a0, $t3		
+	syscall
+	
+	li $v0, 4		
+	la $a0, p2		
+	syscall
+	
+	li $v0, 1		
+	move $a0, $t0		
+	syscall
+	
+	li $v0, 4		
+	la $a0, quebralinha	
+	syscall
+	
+	
+	#SRL
+	srlv $t1, $t1, $t3	
+	li $v0, 4		
+	la $a0, shift_right	
+	syscall
+	
+	li $v0, 4		
+	la $a0, p1		
+	syscall
+	
+	li $v0, 1		
+	move $a0, $t3		
+	syscall
+	
+	li $v0, 4		
+	la $a0, p2		
+	syscall
+	
+	li $v0, 1		
+	move $a0, $t1		
+	syscall
+	
+	li $v0, 4		
+	la $a0, quebralinha	
+	syscall
+		
+	li $v0, 10		# fim do programa
+	syscall

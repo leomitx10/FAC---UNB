@@ -1,0 +1,13 @@
+.data
+	caractere: .byte 'A' #caractere a ser impresso
+.text
+	main:
+		li $v0, 4 #imprimir char
+		la $a0, caractere
+		syscall
+		
+		li $v0, 10
+		syscall
+
+		
+		

@@ -1,0 +1,43 @@
+.data
+	
+.text
+main:	
+	#pega um numero para T0
+	li $v0,5
+	syscall
+	move $t0,$v0
+	
+	#Pega um numero para T3
+	li $v0, 5 		
+	syscall
+	move $t3, $v0
+	
+	#Acrescenta 1 em T1 i++
+	addi $t1, $t1,1
+while:
+	#Se T1 = T0 va para EXIT
+	beq $t1, $t0, exit
+	
+	#Pega um numero para T2
+	li $v0, 5 		
+	syscall
+	move $t2, $v0
+	
+	#Se T2 > T3
+	bgt $t2,$t3,if
+	
+	#Se T2 < T3
+	blt $t2,$t3, else
+	
+	if:
+		#coloca T2 em T3
+		move $t3, $t2
+	else:
+		move $s0, $t3
+		addi $t1,$t1,1
+		j while
+	exit:
+		li $v0,1
+		la $a0, ($s0)
+		syscall
+		

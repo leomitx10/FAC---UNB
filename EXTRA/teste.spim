@@ -1,0 +1,65 @@
+.data
+	quebra: .asciiz "\n"
+	zero: .float 0.0
+	positivo: .asciiz "+\n"
+	negativo: .asciiz "-\n"
+	expoente: .word 127
+.text
+main:
+lw $t3, expoente
+lwc1 $f1, zero
+li $v0, 6 #Lendo float
+syscall
+
+c.lt.s $f0, $f1 #Se menor ou igual, então C1 = 0. Se maior, então C1 = 1
+
+#Rotina para imprimir float
+mov.s $f12, $f0
+li $v0, 2
+syscall
+
+li $v0, 4
+la $a0, quebra
+syscall
+
+#Rotina para imprimir sinal
+bc1t menos
+j mais
+
+mais:
+li $v0, 4
+la $a0, positivo
+syscall
+j continuar
+
+menos:
+li $v0, 4
+la $a0, negativo
+syscall
+
+continuar:
+#Rotina do expoente
+abs.s $f1, $f0
+mfc1 $t1, $f1
+srl $t1, $t1, 23
+sub $t1, $t1, $t3
+
+li $v0, 1
+la $a0, ($t1)
+syscall
+
+li $v0, 4
+la $a0, quebra
+syscall
+
+#Rotina da mantissa
+mfc1 $t2, $f1
+sll $t2, $t2, 9
+srl $t2, $t2, 9
+
+li $v0, 34
+la $a0, ($t2)
+syscall
+
+li $v0, 10
+syscall

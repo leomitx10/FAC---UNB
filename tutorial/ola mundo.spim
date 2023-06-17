@@ -1,0 +1,12 @@
+.data
+	msg: .asciiz "Ola Mundo" #mensagem q vai aparecer
+.text
+
+	main:
+		li $v0,4 #imprimir a string
+		la $a0,msg #indica o endereço em q esta a mensagem
+		syscall #imprima
+		
+		#Encerrar
+    		li $v0, 10
+    		syscall

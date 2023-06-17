@@ -1,0 +1,116 @@
+.data
+	n1: .space 25
+	n2: .space 25
+	zero: .float 0.0
+	num5: .float 5.0
+	celsius: .asciiz "C"
+	fahrenheit: .asciiz "F"
+	kelvin: .asciiz "K"
+	num9: .float 9.0
+	num32: .float 32.0
+	num273: .float 273.0
+.text
+	li $v0,8
+	la $a0,n1
+	la $a1,25
+	
+	syscall
+	
+	move $t0,$a0
+	
+	li $v0,8
+	la $a0,n2
+	la $a1,25
+	
+	syscall
+	
+	move $t1,$a0
+	
+	li $v0, 6
+	syscall
+	
+	lwc1 $f1,zero
+	add.s $f12, $f1 ,$f0
+	
+	la $t3,celsius
+	la $t4,fahrenheit
+	la $t5,kelvin
+	
+	beq $t0,$t5,K
+	beq $t0,$t3,C
+	beq $t0,$t4,F
+
+	C:	
+		beq $t1,$t4,faren
+		beq $t1,$t5,kelv
+	
+		j exit
+
+	faren:
+		lwc1 $f16,num5($gp)
+		lwc1 $f18,num9($gp)
+		div.s $f16 ,$f16 , $f18 
+		lwc1 $f18 , num32 ( $gp ) 
+		mul.s $f16 , $f16 , $f12
+		add.s $f18 , $f18 , $f16 
+		jr $ra
+
+	kelv:
+		lwc1 $f18,num273($gp)
+		add.s $f18,$f18,$f12 
+		jr $ra
+
+	F:				
+		beq $t1,$t5,teste
+		beq $t1,$t3,Ccont
+	
+		j exit
+			
+	Ccont:
+		lwc1 $f16 , num5 ( $gp )
+		lwc1 $f18 , num9 ( $gp )
+		div.s $f16 ,$f16 , $f18
+		lwc1 $f18 ,num32 ( $gp )
+		sub.s $f18 , $f12 , $f18
+		mul.s $f0 , $f16 , $f18
+		jr $ra
+	teste:
+		j Ccont
+	
+		lwc1 $f19,num273($gp)
+		add.s $f18,$f19,$f18 
+		jr $ra
+		
+	K:
+		beq $t1,$t3,Ccont2
+		beq $t1,$t4,FA
+	
+		j exit
+	
+	FA:
+		j Ccont2
+	
+		lwc1 $f16,num5($gp)
+		lwc1 $f19,num9($gp)
+		div.s $f16 ,$f16 , $f19 
+		lwc1 $f19 , num32( $gp ) 
+		mul.s $f16 , $f16 , $f18
+		add.s $f18 , $f19 , $f16 
+		jr $ra
+	
+	Ccont2:
+		lwc1 $f18,num273($gp)
+		sub.s $f18,$f12,$f18 
+		jr $ra
+
+	
+	
+	
+	exit:
+		li $v0,2
+		syscall
+	
+	
+	
+	
+	
